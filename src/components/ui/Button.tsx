@@ -32,10 +32,11 @@ const buttonVariants = cva(
     },
   }
 )
+console.log("buttonVariants", buttonVariants)
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
   isLoading?: boolean
 }
 
