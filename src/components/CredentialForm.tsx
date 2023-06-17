@@ -28,9 +28,7 @@ const CredentialForm: FC<CredentialFormProps> = ({ }) => {
                 redirect: true
             })
 
-            console.log("res", res)
         } catch (error) {
-            console.log("error", error)
             toast({
                 title: 'Error',
                 description: 'There was an error logging',

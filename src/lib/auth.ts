@@ -37,14 +37,13 @@ export const authOptions: NextAuthOptions = {
         //compare password
         const isPasswordMatch = await bcrypt.compare(
           credentials.password,
-          dbUser.password
+          dbUser?.password as string
         );
 
         if (dbUser && isPasswordMatch) {
           return dbUser;
         } else {
           // const hashedPassword = await bcrypt.hash(credentials.password, 10);
-          // console.log("hashedPassword", hashedPassword);
           // const newUser = await db.user.create({
           //   data: {
           //     id: nanoid(16),
@@ -65,8 +64,6 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ token, session }) {
-      console.log("session", session);
-      console.log("token", token);
       if (token) {
         session.user.id = token.id;
         session.user.name = token.name;
@@ -100,7 +97,6 @@ export const authOptions: NextAuthOptions = {
           },
         });
       }
-      console.log("JWT", dbUser);
       return {
         id: dbUser.id,
         name: dbUser.name,
