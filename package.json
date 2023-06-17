@@ -39,6 +39,7 @@
     "@upstash/redis": "^1.21.0",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
+    "bcrypt": "^5.1.0",
     "class-variance-authority": "^0.6.0",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
@@ -66,6 +67,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/editorjs__header": "^2.6.0",
     "@types/lodash.debounce": "^4.0.7",
     "prisma": "^4.15.0"

@@ -3,6 +3,8 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { nanoid } from "nanoid";
 import { NextAuthOptions, getServerSession } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
@@ -13,6 +15,49 @@ export const authOptions: NextAuthOptions = {
     signIn: "/sign-in",
   },
   providers: [
+    CredentialsProvider({
+      name: "Sign In",
+      credentials: {
+        email: {
+          label: "Email",
+          type: "text",
+          placeholder: "exmaple@exmple.com",
+        },
+        password: { label: "Password", type: "password" },
+      },
+
+      async authorize(credentials) {
+        if (!credentials || !credentials.email || !credentials.password) {
+          return null;
+        }
+        const dbUser = await db.user.findFirst({
+          where: { email: credentials.email },
+        });
+
+        //compare password
+        const isPasswordMatch = await bcrypt.compare(
+          credentials.password,
+          dbUser.password
+        );
+
+        if (dbUser && isPasswordMatch) {
+          return dbUser;
+        } else {
+          // const hashedPassword = await bcrypt.hash(credentials.password, 10);
+          // console.log("hashedPassword", hashedPassword);
+          // const newUser = await db.user.create({
+          //   data: {
+          //     id: nanoid(16),
+          //     email: credentials.email,
+          //     password: hashedPassword,
+          //   },
+          // });
+          // return newUser;
+          return null;
+        }
+      },
+    }),
+
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
@@ -20,6 +65,8 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ token, session }) {
+      console.log("session", session);
+      console.log("token", token);
       if (token) {
         session.user.id = token.id;
         session.user.name = token.name;
@@ -53,7 +100,7 @@ export const authOptions: NextAuthOptions = {
           },
         });
       }
-
+      console.log("JWT", dbUser);
       return {
         id: dbUser.id,
         name: dbUser.name,

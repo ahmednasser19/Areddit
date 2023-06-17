@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { Icons } from './Icons'
 import Link from 'next/link'
 import UserAuthForm from './UserAuthForm'
+import CredentialForm from './CredentialForm'
 
 
 
@@ -14,6 +15,8 @@ const SignIn: FC = () => {
                 By continuing, you are setting up Areddit account and agree to our user agreement and privacy police. </p>
 
         </div>
+
+        <CredentialForm />
         <UserAuthForm className='' />
         {/* Sing in form  */}
 
