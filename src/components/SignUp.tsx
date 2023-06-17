@@ -2,7 +2,6 @@ import { FC } from 'react'
 import { Icons } from './Icons'
 import Link from 'next/link'
 import UserAuthForm from './UserAuthForm'
-import CredentialForm from './CredentialForm'
 import CredentialRegistrationForm from './CredentialRegistrationForm'
 
 
