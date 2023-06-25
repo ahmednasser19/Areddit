@@ -1,4 +1,4 @@
-import Editor from '@/components/Editor'
+import { Editor } from '@/components/Editor'
 import { Button } from '@/components/ui/Button'
 import { getAuthSession } from '@/lib/auth'
 import { db } from '@/lib/db'
