@@ -58,11 +58,19 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
             if (index === posts.length - 1) {
                 return (
                     <li key={post.id} ref={ref} >
-                        <Post subredditName={post.subreddit.name} post={post} commentAmt={post.comments.length} />
+                        <Post post={post}
+                            commentAmt={post.comments.length}
+                            subredditName={post.subreddit.name}
+                            votesAmt={votesAmt}
+                            currentVote={currentVote} />
                     </li>
                 )
             } else {
-                return <Post subredditName={post.subreddit.name} key={post.id} post={post} commentAmt={post.comments.length} />
+                return <Post post={post}
+                    commentAmt={post.comments.length}
+                    subredditName={post.subreddit.name}
+                    votesAmt={votesAmt}
+                    currentVote={currentVote} key={post.id} />
             }
 
         })}
