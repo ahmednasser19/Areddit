@@ -1,6 +1,6 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { SubredditSubscriptionValidator } from "@/lib/validators/subreddit";
+import { SubredditValidator } from "@/lib/validators/subreddit";
 import { z } from "zod";
 
 export async function POST(req: Request) {
@@ -12,40 +12,41 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { subredditId } = SubredditSubscriptionValidator.parse(body);
+    const { name } = SubredditValidator.parse(body);
 
-    // check if user has already subscribed to subreddit
-    const subscriptionExists = await db.subscription.findFirst({
+    // check if subreddit already exists
+    const subredditExists = await db.subreddit.findFirst({
       where: {
-        subredditId,
-        userId: session.user.id,
+        name,
       },
     });
 
-    if (subscriptionExists) {
-      return new Response("You've already subscribed to this subreddit", {
-        status: 400,
-      });
+    if (subredditExists) {
+      return new Response("Subreddit already exists", { status: 409 });
     }
 
     // create subreddit and associate it with the user
-    await db.subscription.create({
+    const subreddit = await db.subreddit.create({
       data: {
-        subredditId,
-        userId: session.user.id,
+        name,
+        creatorId: session.user.id,
       },
     });
 
-    return new Response(subredditId);
+    // creator also has to be subscribed
+    await db.subscription.create({
+      data: {
+        userId: session.user.id,
+        subredditId: subreddit.id,
+      },
+    });
+
+    return new Response(subreddit.name);
   } catch (error) {
-    error;
     if (error instanceof z.ZodError) {
-      return new Response(error.message, { status: 400 });
+      return new Response(error.message, { status: 422 });
     }
 
-    return new Response(
-      "Could not subscribe to subreddit at this time. Please try later",
-      { status: 500 }
-    );
+    return new Response("Could not create subreddit", { status: 500 });
   }
 }
