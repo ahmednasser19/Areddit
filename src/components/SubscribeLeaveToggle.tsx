@@ -5,7 +5,7 @@ import { Button } from './ui/Button'
 import { useMutation } from '@tanstack/react-query'
 import { SubscribeToSubredditPayload } from '@/lib/validators/subreddit'
 import axios, { AxiosError } from 'axios'
-import { useCustomToasts } from '@/hooks/use-custom-toast'
+import { useCustomToasts } from '@/hooks/use-custom-toasts'
 import { toast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 
