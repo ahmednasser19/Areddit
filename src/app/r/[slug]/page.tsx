@@ -1,4 +1,3 @@
-// import PostFeed from '@/components/PostFeed'
 import MiniCreatePost from '@/components/MiniCreatePost'
 import PostFeed from '@/components/PostFeed'
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from '@/config'
@@ -35,7 +34,6 @@ const page = async ({ params }: PageProps) => {
         },
     })
 
-
     if (!subreddit) return notFound()
 
     return (
@@ -45,7 +43,6 @@ const page = async ({ params }: PageProps) => {
             </h1>
             <MiniCreatePost session={session} />
             <PostFeed initialPosts={subreddit.posts} subredditName={subreddit.name} />
-            {/*  <PostFeed initialPosts={subreddit.posts} subredditName={subreddit.name} /> */}
         </>
     )
 }
